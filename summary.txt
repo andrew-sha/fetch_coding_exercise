@@ -31,7 +31,8 @@ allows clients to instantiate arbitrary (Weierstrass) elliptic curves types and 
 Further, it gives a simple interface to generate and verify elliptic curve digital signatures using a range of cryptographically secure curves.
 I incorporated several different optimizations into my library, to the point that it can generate signatures in a 256-bit curve in approximately 2 milliseconds.
 I also wrote a suite of unit tests and integrated ruff and mypy into the repository to ensure high code quality. In the future, I would like
-to rewrite the underlying math routines using C, while still exposing the public API in Python, to further improve the performance.
+to rewrite the underlying math routines using C, while still exposing the public API in Python, to further improve the performance. 
+The project can be found here: https://github.com/andrew-sha/pyec
 
 The most challenging part of this project was settling on a good high-level design for the API. Since elliptic curve cryptography is a highly specialized domain, 
 I wanted to create an interface that would be intuitive for users unfamiliar with its technicalities while still being flexible enough to be genuinely useful.
