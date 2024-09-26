@@ -1,0 +1,42 @@
+1. I chose Python because it is the language with which I am most familiar, and also I felt that its straightforward syntax would 
+allow me to rapidly iterate on this project. I also knew that Python had modules in its standard library that would be useful in this exercise,
+specifically the json and datetime modules for working with and parsing json and datetime data formats. Due to my previous experience working with and
+developing Python repositories, I also knew that I would be able to adequately describe how to set up and run the code for an audience who has potentially never 
+used Python.
+
+I chose the Flask library to implement the API itself, since I had previous experience building out REST API endpoints in Flask in a previous internship. I had also used Flask
+for a personal project. Overall, I knew that Flask would be a good tool for this exercise since it allows developers to write API routes with minimal overhead or boilerplate 
+and makes it easy to serve the API from a simple Python script. Similarly, in my test module I opted to use the 3rd-party requests library, which provides a very simple interface
+for making HTTP requests from within a Python program.
+
+2. A primary advantage of my solution is that I store the record of previous transactions using a min-heap data structure, which in many cases will make calls to the /spend
+endpoint more efficient. Since during the /spend call we want to start spending points from the oldest transaction, we want to be able to easily get the oldest transaction. 
+We could simply sort the entire list of transactions, however in the case where we don't need to spend points from every single historical transaction, this will cause us to
+sort more transactions that we need to. Using a min-heap (implemented using the heapq data structure in the Python standard library), we can iteratively pop off the oldest transaction
+from the list of transactions in log time, and once we have spent all the points we want to spend, we can stop popping. Hence in the worst case (i.e. when we need to 
+access every previous transaction to spend the desired amount of points), we will have the time time complexity as sorting the entire list of transactions, but in any other case
+this method will perform better than sorting the entire list.
+
+Another advantage to my solution is that beyond just storing the list of transactions as a global variable, I also store a dictionary containing the total number of points
+associated with each payer, as well as the total number of points in the account. I can update both of these variables in constant time during calls to the /add and /spend endpoints, and 
+having these values will prevent the service from having to iterate through every historical transaction when it needs to check the total number of points available or the total number of points
+associated to each payer in the /spend and /balance endpoints, respectively. 
+
+A disadvantage associated with the above design choice is that more memory is consumed by the upkeep of these additional global variables than if we only stored the list of historical transactions.
+Another disadvantage is that the state of the account is stored entirely within global variables stored in-memory, meaning that as soon as the service is terminated all 
+information pertaining to the account is lost. If we wanted the state to persist across restarts of the service, we would need to write them to a separate database.
+
+3. My favorite project I completed was an elliptic curve library I wrote from scratch in Python. Specifically, it 
+allows clients to instantiate arbitrary (Weierstrass) elliptic curves types and to use them to perform point addition and scalar multiplication.
+Further, it gives a simple interface to generate and verify elliptic curve digital signatures using a range of cryptographically secure curves.
+I incorporated several different optimizations into my library, to the point that it can generate signatures in a 256-bit curve in approximately 2 milliseconds.
+I also wrote a suite of unit tests and integrated ruff and mypy into the repository to ensure high code quality. In the future, I would like
+to rewrite the underlying math routines using C, while still exposing the public API in Python, to further improve the performance.
+
+The most challenging part of this project was settling on a good high-level design for the API. Since elliptic curve cryptography is a highly specialized domain, 
+I wanted to create an interface that would be intuitive for users unfamiliar with its technicalities while still being flexible enough to be genuinely useful.
+It was difficult to strike the right balance between abstracting away the underlying complexity and ensuring that the API exposed enough functionality for those who needed 
+finer control over elliptic curve operations. This meant exposing a minimal number of public methods that supported the primitive operations of point addition and scalar multiplication, 
+while incorporating more sophisticated logic privately to optimize the performance. I went through multiple iterations of the API, refactoring as I slowly homed in on what felt like 
+an intuitive interface. During these refactors I found the unit tests I had written to be extremely useful, as they gave me an easy way to repeatedly verify that
+my changes had not introduced defects into the codebase.
