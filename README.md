@@ -26,38 +26,38 @@ cd fetch-coding-exercise/
 ```
 
 ### Step 2: Install dependencies
-Create a virtual environment using 
+Create a virtual environment:
 
 ```bash
 python3 -m venv .env
 ```
 
-This will serve as a self-isolated environment in which the project's dependencies will be installed. Now activate the environment via
+This will serve as a self-isolated environment in which the project's dependencies will be installed. Now activate the environment:
 
 ```bash
 source .env/bin/activate
 ```
 
-and finally install the required dependencies using 
+and finally install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ### Step 3: Run and test service
-To run the service, run
+Run the service:
 
 ```bash
 python3 points.py
 ```
 
-This will begin serving the API on your local machine via port 8000. To interact with the API, use the `curl` utility from your command line. For example, to add 500 points from the payer Dannon to the user's account, run 
+This will begin serving the API on your local machine via port 8000. To interact with the API, use the `curl` utility from your command line. For example, to add 500 points from the payer Dannon to the user's account, run the following:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/add -H "Content-Type: application/json" -d '{"payer": "DANNON", "points": 5000, "timestamp": "2022-10-31T14:00:00Z"}'
 ```
 
-Alternatively, to test the API on the test case provided in the specifications, run the following from within the project's virtual environment
+Alternatively, to test the API on the test case provided in the specifications, run the following from within the project's virtual environment:
 
 ```bash
 python3 test_points.py
